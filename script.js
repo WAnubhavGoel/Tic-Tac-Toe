@@ -4,10 +4,7 @@ const gameBoard=(function(){
     const setMark=(index,mark)=>{
         if(board[index]==="") board[index]=mark;
     }
-    const reset=()=>{
-        board=["","","","","","","","",""];
-    };
-    return {getBoard,setMark,reset};
+    return {getBoard,setMark};
 })();
 const player=(playerName,mark)=>{
     return {playerName,mark};
@@ -55,7 +52,7 @@ const gameController=(function(){
         }
         gameOver=false;
         currentPlayer=player1;
-        gameBoard.reset();
+        gameController.reset();
     }
     const switchPlayer=()=>{
         if(currentPlayer==player1){
@@ -82,7 +79,14 @@ const gameController=(function(){
         }
         switchPlayer();
     }
-    return {setStartingMark,playGame};
+    const reset=()=>{
+        const board=gameBoard.getBoard();
+        for(let i=0;i<9;i++){
+            board[i]="";
+        }
+        gameOver=false;
+    };
+    return {setStartingMark,playGame,reset};
 })();
 const displayController=(function(){
     const cells=document.querySelectorAll(".cell");
@@ -105,18 +109,18 @@ const circleBtn=document.querySelector(".circle");
 const renderBtn=document.querySelector(".reset");
 const result=document.querySelector(".result");
 renderBtn.addEventListener("click",()=>{
-    gameBoard.reset();
+    gameController.reset();
     result.textContent="";
     displayController.render();
 })
 crossBtn.addEventListener("click",()=>{
-    gameBoard.reset();
+    gameController.reset();
     result.textContent="";
     gameController.setStartingMark("X");
     displayController.render();
 })
 circleBtn.addEventListener("click",()=>{
-    gameBoard.reset();
+    gameController.reset();
     result.textContent="";
     gameController.setStartingMark("O");
     displayController.render();
